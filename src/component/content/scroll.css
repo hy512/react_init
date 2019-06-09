@@ -1,0 +1,19 @@
+/* .scroll {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    display: block;
+    box-sizing: border-box;
+} */
+
+.scroll {
+    overflow: auto;
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    -webkit-overflow-scrolling: touch;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 55px;
+}

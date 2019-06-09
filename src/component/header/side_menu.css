@@ -1,0 +1,44 @@
+.header {
+    --header-height: 55px;
+    line-height: var(--header-height);
+    height: var(--header-height);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+}
+
+.header {
+    background-color: white;
+}
+
+.header span {
+    cursor: pointer;
+}
+
+.side {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.side {
+    background-color: rgba(3, 3, 3, 0.3);
+    z-index: 9500;
+}
+
+.side .panel {
+    position: absolute;
+    width: 60%;
+    left: -60%;
+    top: 0;
+    bottom: 0;
+    background-color: white;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}

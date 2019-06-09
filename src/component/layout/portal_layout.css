@@ -1,0 +1,25 @@
+.root {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.content {
+    padding-top: 55px;
+    padding-bottom: 60px;
+}
+
+.tab>span {
+    display: block;
+}
+
+.tab>span:last-of-type {
+    font-size: 14px;
+}
+.tab {
+    cursor: pointer;
+    color: var(--secondary);
+}
+.tab.active {
+    color: var(--cyan);
+}

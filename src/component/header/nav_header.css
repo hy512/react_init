@@ -1,0 +1,38 @@
+.header {
+    --header-height: 55px;
+    line-height: var(--header-height);
+    height: var(--header-height);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    /* display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center; */
+    text-align: center;
+}
+
+.header {
+    background-color: white;
+}
+
+.header span {
+    line-height: var(--header-height);
+    height: var(--header-height);
+    cursor: pointer;
+    box-sizing: content-box;
+    /* position: absolute;
+    padding-top: 0;
+    padding-bottom: 0; */
+}
+
+.header>span:first-of-type {
+    float: left;
+}
+
+.header>span:last-of-type {
+    float: right;
+}

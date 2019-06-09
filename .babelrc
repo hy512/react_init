@@ -1,0 +1,26 @@
+{
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": ".",
+                "alias": {
+                    "@": "./src",
+                    "@style": "./src/style",
+                }
+            }
+        ],
+        [
+            "react-css-modules",
+            {
+                "generateScopedName": "[local]___[hash:base64]",
+                "autoResolveMultipleImports": true
+            }
+        ],
+        "@babel/plugin-transform-runtime",
+    ]
+}

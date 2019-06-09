@@ -1,0 +1,21 @@
+.bottom {
+    --bottom-height: 60px;
+    height: var(--bottom-height);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+}
+
+.bottom {
+    box-shadow: 0 -0.1rem .5rem rgba(0, 0, 0, .15);
+    background-color: white;
+}
+
+.tab {
+    height: var(--bottom-height);
+    text-align: center;
+    /* display: block; */
+    /* margin: 0 auto; */
+}
