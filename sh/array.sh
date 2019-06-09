@@ -65,6 +65,8 @@ function arrayliteralslength() {
 }
 
 # 向数组中追加入元素
+# 由于空字符串 "" 无法当作参数传递, 所以赋值会出现问题
+# arraypush "ary" "a b c"; 传递的元素之间不能有空格, 不然会被识别成多个元素
 # $1 数组变量名称
 # $n (n>1) 要加入的元素
 function arraypush() {
@@ -110,5 +112,52 @@ function arrayshift() {
         "array_shift_unset"
     );
     unsetvar "array_shift_unset"
+    return 0;
+}
+
+# 将数组转换成字符串
+# $1 返回值变量名
+# $2 数组的变量名
+function arraytostring() {
+    array_to_string_i=0;
+    arraylength "array_to_string_len" $2;
+    eval "$1='['";
+    while test $array_to_string_i -lt $array_to_string_len
+    do
+        if test $array_to_string_i -ne 0
+        then
+            array_to_string_expr="$1=\"\$$1, ";
+        else
+            array_to_string_expr="$1=\"\$$1 ";
+        fi
+
+        array_to_string_expr="${array_to_string_expr}${array_to_string_i}: \${$2[$array_to_string_i]}\"";
+        eval $array_to_string_expr;
+
+        array_to_string_i=`expr $array_to_string_i + 1`;
+    done
+    eval "$1=\"\$$1 \"]";
+
+    array_to_string_vars=(
+        "array_to_string_i"
+        "array_to_string_len"
+        "array_to_string_expr"
+        "array_to_string_vars"
+    );
+    unsetvar "array_to_string_vars";
+    return 0;
+}
+
+# 判断是否为数组 (依据数组是否为空数组判断...)
+# $1 数组名称 
+# return true | false
+function isarray() {
+    array_is_array_expr="test -z \"\${$1[*]}\" -a \${#$1[*]} -eq 0";
+    if eval $array_is_array_expr
+    then
+        unset -v array_is_array_expr;
+        return 1;
+    fi
+    unset -v array_is_array_expr;
     return 0;
 }

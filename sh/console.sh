@@ -10,6 +10,9 @@ function cecho() {
     "red")
         tx="31"
         ;;
+    "yellow")
+        tx="33"
+        ;;
     "blue")
         tx="34"
         ;;
@@ -37,4 +40,8 @@ function error() {
 
 function info() {
     cecho "INFO: $1" "cerulean"
+}
+
+function warn() {
+    cecho "WARN: $1" "yellow"
 }

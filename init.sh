@@ -5,43 +5,18 @@ devDependencies=""
 
 shellDir=`cd $(dirname $0); pwd`;
 baseDir=`pwd`;
-projectDir=`pwd`;
+projectDir="";
 
 args=($@)
 
 source "${shellDir}/sh/bootstrap.sh"
-
-var=("a" "b" "c" "d" "哈哈哈")
-arrayindexof "index" "var" "c";
-echo $index;
-
-arrayindexof "index" "var" "d";
-echo $index;
-
-arrayindexof "index" "var" "f";
-echo $index;
-
-arrayindexof "index" "var" "a";
-echo $index;
-
-arrayindexof "index" "var" "bc";
-echo $index;
-
-arrayindexof "index" "var" "cde";
-echo $index;
-
-arrayindexof "index" "var" "哈哈哈";
-echo $index;
-
-
-exit 0;
 
 function setting() {
     i=0
     while [[ $i < ${#args[@]} ]]
     do
         case ${args[$i]} in
-        "--dir")
+        "--p")
             # 检查项目创建目录
             dir=${args[$((i+1))]}
 
@@ -69,13 +44,25 @@ function setting() {
             projectDir=$dir
             i=$((i+2))
             continue
+            ;;
+        *)
+            if test -z "$projectDir"
+            then
+                projectDir="${baseDir}/${args[$i]}";
+            else
+                error "无效参数: ${args[$i]}";
+                exit 1;
+            fi
         esac
+
+        i=`expr $i + 1`;
     done
     unset i
 
     if [ "$projectDir" = "" ]
     then
         projectDir=$baseDir
+        warn "未指定项目路径";
     fi
 
     return 0
@@ -83,16 +70,18 @@ function setting() {
 
 # 建立项目
 function tryBuildProject() {
+    cd ${projectDir}
     if [ ! -e "${projectDir}/package.json" ]
     then
-        echo 'npm init -y'
+        npm init -y
     fi
+    cd -
     return 0
 }
 
 # 安装 libs
 function installDependencies() {
-    cd $projectDir
+    cd ${projectDir}
 
     # react
     devDependencies="${devDependencies} @types/react @types/react-dom"
@@ -143,19 +132,22 @@ function installDependencies() {
     # postcss
     devDependencies="${devDependencies} autoprefixer cssnano"
     
-    echo "npm install --save-dev ${devDependencies}"
-    echo "npm install ${dependencies}"
+    npm install --save-dev ${devDependencies}
+    npm install ${dependencies}
 
     cd -
     return 0
 }
 
 function copyResource() {
-    echo 'cp -rv "${baseDir}/init/*" "${projectDir}/"'
+    cp -rv "${shellDir}/*" "${projectDir}/"
     return 0
 }
 
 function addNpmScript() {
+    cd ${projectDir}
+    sed -ri "/\"scripts\":\s*/ r ${shellDir}/package.json.scripts.txt" package.json
+    cd -
     return 0
 }
 
@@ -163,7 +155,14 @@ function main() {
 
     setting
 
-    info "项目路径为 $projectDir"
+    info "项目路径为: ${projectDir}";
+    read -p "是否确定? (y/n):" confirm;
+
+    if test "$confirm" = "n"
+    then
+        info "取消操作";
+        exit 0;
+    fi
 
     tryBuildProject
 

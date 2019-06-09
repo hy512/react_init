@@ -16,3 +16,17 @@ function unsetvar() {
     unset -v unset_var_var;
     return 0;
 }
+
+# 变量是否设置
+# $1 变量名
+# function isset() {
+#     is_set_var_expr="test \$$1";
+#     echo $is_set_var_expr
+#     if eval $is_set_var_expr
+#     then
+#         unset -v is_set_var_expr;
+#         return 0;
+#     fi
+#     unset -v is_set_var_expr;
+#     return 1;
+# }
