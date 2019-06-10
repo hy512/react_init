@@ -74,7 +74,7 @@ export class ScrollView extends React.Component<ScrollViewProps, ScrollViewState
                 this.setState({ indicator: { y: y > 50 ? 50 : y, text: y > 40 ? "松开加载" : "下拉刷新" } })
 
                 if (this._scrollTimer) clearTimeout(this._scrollTimer);
-                this._scrollTimer = setTimeout(() => this.setState({ indicator: { y: -50, text: "加载完毕" } }), 1000);
+                this._scrollTimer = window.setTimeout(() => this.setState({ indicator: { y: -50, text: "加载完毕" } }), 1000);
             }
         });
 

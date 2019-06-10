@@ -65,11 +65,30 @@ function setting() {
         warn "未指定项目路径";
     fi
 
+    info "项目路径: ${projectDir}";
+    read -p "是否确定? (y/n):" confirm;
+
+    if test "$confirm" = "n"
+    then
+        info "取消操作";
+        exit 0;
+    fi
+
     return 0
 }
 
 # 建立项目
 function tryBuildProject() {
+    if test ! -e $projectDir
+    then
+        info "创建路径： ${projectDir}";
+        mkdir -p $projectDir
+        if test $? -ne 0
+        then
+            error "创建项目失败";
+        fi
+    fi
+
     cd ${projectDir}
     if [ ! -e "${projectDir}/package.json" ]
     then
@@ -114,7 +133,7 @@ function installDependencies() {
     devDependencies="${devDependencies} webpack webpack-cli webpack-merge webpack-dev-server"
     
     # webpack-plugins
-    devDependencies="${devDependencies} uglifyjs-webpack-plugin"
+    devDependencies="${devDependencies} uglifyjs-webpack-plugin html-webpack-plugin"
     
     # loader
     devDependencies="${devDependencies} babel-loader css-loader file-loader postcss-loader style-loader ts-loader"
@@ -123,7 +142,7 @@ function installDependencies() {
     devDependencies="${devDependencies} tslint typescript"
     
     # babel
-    dependencies="${devDependencies} babel-polyfill @babel/runtime"
+    dependencies="${dependencies} babel-polyfill @babel/runtime"
     devDependencies="${devDependencies} @babel/core @babel/plugin-transform-runtime @babel/preset-env @babel/preset-react"
     
     # babel-plugins
@@ -132,7 +151,10 @@ function installDependencies() {
     # postcss
     devDependencies="${devDependencies} autoprefixer cssnano"
     
+    info "安装依赖: ${devDependencies}"
     npm install --save-dev ${devDependencies}
+
+    info "安装依赖: ${dependencies}"
     npm install ${dependencies}
 
     cd -
@@ -140,38 +162,28 @@ function installDependencies() {
 }
 
 function copyResource() {
-    cp -rv "${shellDir}/*" "${projectDir}/"
+    info "复制资源文件"
+    cp -rv ${shellDir}/.babelrc ${projectDir}/
+    cp -rv ${shellDir}/.postcssrc.json ${projectDir}/
+    cp -rv ${shellDir}/* ${projectDir}/
     return 0
 }
 
 function addNpmScript() {
     cd ${projectDir}
+    info "添加 NPM 脚本"
     sed -ri "/\"scripts\":\s*/ r ${shellDir}/package.json.scripts.txt" package.json
     cd -
     return 0
 }
 
 function main() {
-
     setting
-
-    info "项目路径为: ${projectDir}";
-    read -p "是否确定? (y/n):" confirm;
-
-    if test "$confirm" = "n"
-    then
-        info "取消操作";
-        exit 0;
-    fi
-
     tryBuildProject
-
     installDependencies
-
     addNpmScript
-
     copyResource
-
+    info "success"
     return 0
 }
 

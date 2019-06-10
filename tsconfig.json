@@ -1,7 +1,6 @@
 {
-  "exclude": ["plugins"],
   "compilerOptions": {
-    "outDir": "./www/ts",
+    "outDir": "./dist/ts",
     "noImplicitAny": true,
     "module": "es6",
     "target": "es5",

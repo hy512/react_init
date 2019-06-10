@@ -7,7 +7,7 @@ module.exports = {
     entry: {
         vendor: [
             // "axios",
-            "@babel/runtime",
+            // "@babel/runtime",
             "@tweenjs/tween.js",
             "babel-polyfill",
             // "url",
@@ -25,14 +25,14 @@ module.exports = {
         ]
     },
     output: {
-        path: path.resolve(__dirname, "../www/dll"),
+        path: path.resolve(__dirname, "../dist/dll"),
         filename: "[name].dll.js",
         library: "[name]",
         libraryTarget: "umd",
     },
     plugins: [
         new webpack.DllPlugin({
-            path: path.join(__dirname, '../www/dll', '[name]-manifest.json'),
+            path: path.join(__dirname, '../dist/dll', '[name]-manifest.json'),
             context: __dirname,
             name: '[name]'
         }),
