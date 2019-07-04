@@ -140,6 +140,7 @@ function installDependencies() {
     
     # typescript
     devDependencies="${devDependencies} tslint typescript"
+    devDependencies="${devDependencies} @types/jquery"
     
     # babel
     dependencies="${dependencies} babel-polyfill @babel/runtime"
@@ -163,9 +164,27 @@ function installDependencies() {
 
 function copyResource() {
     info "复制资源文件"
-    cp -rv ${shellDir}/.babelrc ${projectDir}/
-    cp -rv ${shellDir}/.postcssrc.json ${projectDir}/
-    cp -rv ${shellDir}/* ${projectDir}/
+    resources=(
+        "build"
+        "src"
+        ".babelrc"
+        ".postcssrc.json"
+        "index.html"
+        "jsconfig.json"
+        "tsconfig.json"
+        "tslint.json"
+        "webpack.config.js"
+    )
+
+    i=0
+    while test $i -lt ${#resources[@]} 
+    do
+        resources[$i]="${shellDir}/${resources[$i]}"
+        i=`expr $i + 1`
+    done
+    unset i
+
+    cp -rv ${resources[@]} -t ${projectDir}/
     return 0
 }
 

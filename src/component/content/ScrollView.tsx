@@ -47,7 +47,7 @@ export class ScrollView extends React.Component<ScrollViewProps, ScrollViewState
         if (!wrapper) return;
         let $wrapper = $(wrapper);
         // 上拉加载
-        $wrapper.on("touchstart", (e) => {
+        $wrapper.on("touchstart", (e: any) => {
             let wrapper = this._refs.get("wrapper");
             // 标识新的下拉开始
             this._scroll = null;
@@ -62,7 +62,7 @@ export class ScrollView extends React.Component<ScrollViewProps, ScrollViewState
             }
         });
 
-        $wrapper.on("touchmove", (e) => {
+        $wrapper.on("touchmove", (e: any) => {
             let wrapper = this._refs.get("wrapper");
             if (this._scroll === null || $(wrapper).scrollTop() > document.documentElement.clientHeight) return;
 
@@ -78,7 +78,7 @@ export class ScrollView extends React.Component<ScrollViewProps, ScrollViewState
             }
         });
 
-        $wrapper.on("touchend", (e) => {
+        $wrapper.on("touchend", (e: any) => {
             let wrapper = this._refs.get("wrapper");
             if (this._scroll === null || $(wrapper).scrollTop() > document.documentElement.clientHeight) return;
             if (this._scrollTimer) clearTimeout(this._scrollTimer);
